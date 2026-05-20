@@ -33,11 +33,30 @@ export default function AdminPanelPage() {
 
   return (
     <div>
-      <div style={{ background: 'rgba(255, 0, 0, 0.1)', borderBottom: '2px solid red' }}>
-        <marquee style={{ color: '#ff4444', fontWeight: 'bold', fontSize: '1.2rem', padding: '10px 0', textTransform: 'uppercase', letterSpacing: '2px' }}>
-          ⚠️ DISCLAIMER: ANY FALSE INFORMATION SUBMITTED WILL RESULT IN SEVERE ACTION TAKEN THROUGHOUT THE WEBSITE ⚠️
-        </marquee>
-      </div>
+  <div style={{ 
+    background: 'rgba(255, 0, 0, 0.1)', 
+    borderBottom: '2px solid red', 
+    overflow: 'hidden' 
+  }}>
+    <p style={{ 
+      color: '#ff4444', 
+      fontWeight: 'bold', 
+      fontSize: '1.2rem', 
+      padding: '8px', 
+      whiteSpace: 'nowrap', 
+      animation: 'scroll-left 12s linear infinite' 
+    }}>
+      ⚠️ DISCLAIMER: ANY FALSE INFORMATION SUBMITTED WILL RESULT IN SEVERE ACTION TAKEN...
+    </p>
+  </div>
+</div>
+
+<style jsx>{`
+  @keyframes scroll-left {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+`}</style>
       
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
         <header style={{ marginBottom: '40px' }}>
