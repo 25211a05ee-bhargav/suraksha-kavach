@@ -19,12 +19,27 @@ export default function Navbar() {
             50% { background-color: rgba(255, 0, 0, 0.4); }
             100% { background-color: rgba(255, 0, 0, 0.1); }
           }
+          @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+          }
         `}
       </style>
       <div style={{ borderBottom: '2px solid red', width: '100%', overflow: 'hidden', animation: 'pulseRed 2s infinite ease-in-out' }}>
-        <marquee style={{ color: '#ff4444', fontWeight: 'bold', fontSize: '1.2rem', padding: '10px 0', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', width: '100%' }}>
+        <p style={{ 
+          color: '#ff4444', 
+          fontWeight: 'bold', 
+          fontSize: '1.2rem', 
+          padding: '10px 0', 
+          textTransform: 'uppercase', 
+          letterSpacing: '2px', 
+          display: 'inline-block', 
+          whiteSpace: 'nowrap',
+          animation: 'scroll-left 15s linear infinite',
+          margin: 0
+        }}>
           ANY FALSE INFORMATION LEADS TO CRICTICAL ACTION . LETS DEVELOP COUNTRY TOGETHER !! JAI HIND
-        </marquee>
+        </p>
       </div>
       <nav className={styles.navbar} style={{ position: 'relative' }}>
         <div className={styles.container}>
