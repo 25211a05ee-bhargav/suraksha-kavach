@@ -225,7 +225,4 @@ export default function AdminPanelPage() {
                 type="button" 
                 className="btn-primary" 
                 style={{ marginTop: '10px' }} 
-                onClick={handleUpdateChecklist}
-              >
-                Update Checklist
-              </
+
