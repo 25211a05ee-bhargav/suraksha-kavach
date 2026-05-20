@@ -231,4 +231,10 @@ export default function AdminPanelPage() {
               </button>
             </form>
           </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
         
