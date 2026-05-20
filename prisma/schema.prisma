@@ -1,0 +1,163 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// NextAuth Models
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(STUDENT)
+  schoolId      String?
+  school        School?   @relation(fields: [schoolId], references: [id])
+  aapdaScore    Int       @default(0)
+  
+  accounts      Account[]
+  sessions      Session[]
+  hazardReports HazardReport[]
+  sensorChecks  SensorHealthCheck[]
+  rewardsClaimed RewardClaim[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  STUDENT
+  SCHOOL_ADMIN
+  GOVERNMENT_OFFICIAL
+}
+
+model School {
+  id            String    @id @default(cuid())
+  name          String
+  location      String
+  
+  users         User[]
+  certificates  SafetyCertificate[]
+  mockDrills    MockDrill[]
+  fortifications FortificationCheck[]
+}
+
+model Alert {
+  id            String    @id @default(cuid())
+  source        String    // IMD, CWC, INCOIS
+  severity      String
+  capPayload    Json      // Raw Common Alerting Protocol data
+  latitude      Float
+  longitude     Float
+  radiusKm      Float
+  createdAt     DateTime  @default(now())
+}
+
+model HazardReport {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  latitude      Float
+  longitude     Float
+  photoUrl      String
+  description   String
+  status        String    @default("PENDING") // PENDING, VERIFIED, RESOLVED
+  createdAt     DateTime  @default(now())
+}
+
+model SensorHealthCheck {
+  id            String    @id @default(cuid())
+  sensorId      String    // E.g., IIT Mandi IoT sensor ID
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  status        String    // OK, DAMAGED, VANDALIZED, OFFLINE
+  notes         String?
+  createdAt     DateTime  @default(now())
+}
+
+model RewardClaim {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  rewardId      String
+  reward        Reward    @relation(fields: [rewardId], references: [id])
+  claimedAt     DateTime  @default(now())
+}
+
+model Reward {
+  id            String    @id @default(cuid())
+  name          String
+  description   String
+  pointsRequired Int
+  type          String    // CREDIT, KIT, PRIORITY
+  
+  claims        RewardClaim[]
+}
+
+model SafetyCertificate {
+  id            String    @id @default(cuid())
+  schoolId      String
+  school        School    @relation(fields: [schoolId], references: [id])
+  documentUrl   String
+  validUntil    DateTime
+  status        String    @default("PENDING")
+  createdAt     DateTime  @default(now())
+}
+
+model MockDrill {
+  id            String    @id @default(cuid())
+  schoolId      String
+  school        School    @relation(fields: [schoolId], references: [id])
+  date          DateTime
+  participants  Int
+  reportUrl     String?
+  createdAt     DateTime  @default(now())
+}
+
+model FortificationCheck {
+  id            String    @id @default(cuid())
+  schoolId      String
+  school        School    @relation(fields: [schoolId], references: [id])
+  item          String    // e.g. "CCTV Cameras", "Boundary Wall"
+  status        String    // OK, NEEDS_REPAIR
+  lastChecked   DateTime  @default(now())
+}
