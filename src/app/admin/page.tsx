@@ -33,10 +33,19 @@ export default function AdminPanelPage() {
 
   return (
     <div>
+      {/* Scoped CSS for animation to replace the deprecated <marquee> tag */}
+      <style jsx>{`
+        @keyframes scroll-left {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
+
       {/* Disclaimer Banner */}
       <div style={{ 
         background: 'rgba(255, 0, 0, 0.1)', 
         borderBottom: '2px solid red', 
+        width: '100%', 
         overflow: 'hidden' 
       }}>
         <p style={{ 
@@ -45,19 +54,12 @@ export default function AdminPanelPage() {
           fontSize: '1.2rem', 
           padding: '8px', 
           whiteSpace: 'nowrap', 
-          animation: 'scroll-left 12s linear infinite' 
+          animation: 'scroll-left 15s linear infinite',
+          margin: 0
         }}>
-          ⚠️ DISCLAIMER: ANY FALSE INFORMATION SUBMITTED WILL RESULT IN SEVERE ACTION TAKEN...
+          ⚠️ ANY FALSE INFORMATION LEADS TO CRITICAL ACTION. LETS DEVELOP COUNTRY TOGETHER...
         </p>
       </div>
-
-      {/* Scoped CSS for animation */}
-      <style jsx>{`
-        @keyframes scroll-left {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-      `}</style>
 
       {/* Main Container */}
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
